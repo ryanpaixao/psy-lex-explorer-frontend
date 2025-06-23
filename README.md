@@ -1,86 +1,54 @@
-# Tech Stack #
-**Frontend**: React 19 (with new hooks), TypeScript, Tailwind CSS
+# React + TypeScript + Vite
 
-**Backend**: Python (Flask/FastAPI), NLP libraries (spaCy, scikit-learn)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-**ML**: Sentence Transformers, BERTopic, FAISS (similarity search)
+Currently, two official plugins are available:
 
-**Data**: Psychology textbook corpus, research abstracts, glossary databases
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
+## Expanding the ESLint configuration
 
-# Core Idea #
-Build an intelligent search interface that goes beyond keyword matching to:
-1) Understand psychological concepts contextually
-2) Map relationships between theories/concepts
-3) Recommend semantically related research
-4) Visualize knowledge networks
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-# Key Features & Implementation #
-1) Semantic Search Engine
-  - ML Component: Sentence-BERT embeddings + FAISS index
-  - Backend(Python)
-  - Frontend(React/TS)
-    - Search component with debounced input
-    - Results card with confidence score visualization
-2) Concept Relationship Mapper
-  - ML Component: BERTopic for topic modeling
-  - Workflow:
-    1) Extract key concepts from search results
-    2) Generate topic clusters
-    3) Visualize with force-directed graph
-  - React Visulaization: Use react-force-graph or D3.js
-3) Literature Recommender
-  - ML Component: Cosine similarity on TF-IDF vectors
-  - Feature: "Find similar papers" button on each result
-4) Cognitive Bias Detector(Bonus)
-  - Analyze search patterns to suggest:
-    - Confirmation bias in queries
-    - Overlooked perspectives
-  - Use rule-based NLP with spaCy patterns
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-# Psychology Data Sources #
-1) Open Access Journals:
-  - APA PsycArticles
-  - PubMed Central (psychology subset)
-2) Textbook Corpus:
-  - Create structured glossary from psychology textbooks
-3) Theory Databases:
-  - Compile key theories(e.g., Maslow's hierarchy, CBT principles)
-4) Sample Dataset Structure:
-  ```
-  {
-    "concept": "Cognitive Dissonance",
-    "theory": "Festinger (1957)",
-    "definition": "The mental discomfort...",
-    "related": ["Confirmation Bias", "Self-Perception Theory"],
-    "studies": ["10.1037/h0041598", "10.1177/0146167205280909"]
-  }
-  ```
-
-
-# Frontend Components (React 19 + TypeScript) #
-1) SemanticSearch.tsx - Main search interface
-2) KnowledgeGraph.tsx - 3D force-directed graph
-3) TheoryCard.tsx - Animated concept cards
-4) BiasDetector.tsx - Query analysis panel
-5) RecommendationEngine.tsx - Carousel of related papers
-
-
-# Backend Services (Python) #
-1) /api/search - Semantic search endpoint
-2) /api/visualize - Topic relationship data
-3) /api/recommend - Similar papers suggestion
-4) /api/analyze - Bias detection endpoint
-
-
-# Machine Learning Pipeline #
-graph LR
-A[Raw Psychology Texts] --> B(Data Preprocessing)
-B --> C[Embedding Generation]
-C --> D[FAISS Indexing]
-D --> E[Search Service]
-B --> F[Topic Modeling]
-F --> G[Knowledge Graph]
-E --> H[React Interface]
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
